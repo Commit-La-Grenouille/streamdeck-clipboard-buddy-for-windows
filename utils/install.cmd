@@ -20,7 +20,11 @@ taskkill /f /im %UUID%.exe
 timeout /t 2
 
 del %OUTPUT_DIR%\%UUID%.streamDeckPlugin
+
+@echo on
 %DISTRIBUTION_TOOL% -b -i %UUID%.sdPlugin -o %OUTPUT_DIR%
+@echo off
+IF %ERRORLEVEL% NEQ 0 (Echo ---------- AN ERROR WAS FOUND ---------- & Exit /b 1)
 
 rmdir %APPDATA%\Elgato\StreamDeck\Plugins\%UUID%.sdPlugin /s /q
 START "" %STREAM_DECK_FILE%

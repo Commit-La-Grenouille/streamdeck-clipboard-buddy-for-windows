@@ -1,5 +1,9 @@
 using BarRaider.SdTools;
 using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
+using BarRaider.SdTools.Wrappers;
 
 
 namespace ClipboardBuddy
@@ -13,13 +17,14 @@ namespace ClipboardBuddy
         public ClipboardBuddyClear(SDConnection connection, InitialPayload payload) : base(connection, payload)
         { }
 
+        
         /*
          * INTERNAL PROPERTIES
          */
         private string _data = "";
         private DateTime _whenPressed;
-        private DateTime _whenReleased;
 
+        
         /*
          * BASIC ABSTRACT METHODS SKELETONS
          */
@@ -54,9 +59,15 @@ namespace ClipboardBuddy
         
         public override async void KeyReleased(KeyPayload payload)
         {
-            _whenReleased = DateTime.Now; 
-            _data = Common.TwoStateStorage(_whenPressed, _whenReleased, _data);
-            await Connection.SetTitleAsync(_data);
+            // Processing the behavior of the key to get the relevant text
+            _data = Common.TwoStateStorage(_whenPressed, DateTime.Now, _data);
+            
+            // DISPLAY BASIC: display the text as title
+            // await Connection.SetTitleAsync(_data);
+            
+            // DISPLAY+: show the text rendered multiline as text
+            Image keyLook = Common.RenderKeyImage("postit-empty", _data, "postit-unused-clear");
+            await Connection.SetImageAsync(keyLook);
         }
     }
 }

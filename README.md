@@ -19,12 +19,13 @@ This is a plugin for the Elgato (Corsair) StreamDeck device to store strings as 
 When ready, you can open a PR from your fork.
 Do not forget to add any explanation of the bug/feature with screenshots to help with the validation testing.
 
-## Credits
+## Wall of Thanks
 
 This plugin was possible thanks to:
 
-* @elgatosf for the hardware and SDK documentation
-* @BarRaider for the [streamdeck-tools library](https://github.com/BarRaider/streamdeck-tools) making C# plugins a breeze to implement
+* [elgatosf](https://github.com/elgatosf) for the hardware and SDK documentation
+* [BarRaider](https://github.com/BarRaider) for the [streamdeck-tools library](https://github.com/BarRaider/streamdeck-tools) making C# plugins a breeze to implement
+* [JetBrains](https://www.jetbrains.com) for their amazing Rider IDE demo
 
 ## License
 

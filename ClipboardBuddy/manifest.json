@@ -78,7 +78,7 @@
   ],
   "SDKVersion": 2,
   "Author": "Commit-La-Grenouille",
-  "CodePath": "Clipboard-Buddy-For-Windows",
+  "CodePath": "net.localhost.streamdeck.clipboard-buddy-for-windows.exe",
   "Name": "Clipboard Buddy For Windows",
   "Description": "Your best friend with clipboard text retention needs",
   "URL": "https://github.com/Commit-La-Grenouille/streamdeck-clipboard-buddy-for-windows",
