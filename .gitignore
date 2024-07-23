@@ -1,0 +1,7 @@
+# IDE files
+.idea
+
+
+# Build artefacts
+ClipboardBuddy/bin
+ClipboardBuddy/obj

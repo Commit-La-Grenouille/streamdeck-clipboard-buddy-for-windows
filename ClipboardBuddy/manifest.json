@@ -1,0 +1,98 @@
+{
+  "Actions": [
+    {
+      "Icon": "icons/postit-action",
+      "Name": "Clipboard slot (multi)",
+      "States": [
+        {
+          "Image": "icons/postit-unused",
+          "TitleAlignment": "middle",
+          "FontSize": "12",
+          "TitleColor": "cyan"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "",
+      "UUID": "net.localhost.streamdeck.clipboard-buddy"
+    },
+    {
+      "Icon": "icons/postit-action",
+      "Name": "Clipboard slot (clear-only)",
+      "States": [
+        {
+          "Image": "icons/postit-unused-clear",
+          "TitleAlignment": "middle",
+          "FontSize": "12",
+          "TitleColor": "cyan"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "",
+      "UUID": "net.localhost.streamdeck.clipboard-buddy-clear"
+    },
+    {
+      "Icon": "icons/postit-action",
+      "Name": "Clipboard slot (secure-only)",
+      "States": [
+        {
+          "Image": "icons/postit-unused-secure",
+          "TitleAlignment": "middle",
+          "FontSize": "12",
+          "TitleColor": "cyan"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "",
+      "UUID": "net.localhost.streamdeck.clipboard-buddy-secure"
+    },
+    {
+      "Icon": "icons/postit-action",
+      "Name": "All clear slot",
+      "States": [
+        {
+          "Image": "icons/postit-nuke",
+          "TitleAlignment": "middle",
+          "FontSize": "12",
+          "TitleColor": "cyan"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "",
+      "UUID": "net.localhost.streamdeck.clipboard-buddy-nuke"
+    },
+    {
+      "Icon": "icons/postit-action",
+      "Name": "Line clear slot",
+      "States": [
+        {
+          "Image": "icons/postit-trashcan",
+          "TitleAlignment": "middle",
+          "FontSize": "12",
+          "TitleColor": "cyan"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "",
+      "UUID": "net.localhost.streamdeck.clipboard-buddy-line"
+    }
+  ],
+  "SDKVersion": 2,
+  "Author": "Commit-La-Grenouille",
+  "CodePath": "Clipboard-Buddy-For-Windows",
+  "Name": "Clipboard Buddy For Windows",
+  "Description": "Your best friend with clipboard text retention needs",
+  "URL": "https://github.com/Commit-La-Grenouille/streamdeck-clipboard-buddy-for-windows",
+  "Icon": "icons/postit-store",
+  "Version": "0.7.1",
+  "Category": "Clipboard Buddy",
+  "CategoryIcon": "icons/postit-category",
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Software": {
+    "MinimumVersion": "6.0"
+  }
+}
