@@ -1,9 +1,6 @@
 using BarRaider.SdTools;
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using BarRaider.SdTools.Wrappers;
 
 
 namespace ClipboardBuddy
@@ -68,6 +65,9 @@ namespace ClipboardBuddy
             // DISPLAY+: show the text rendered multiline as text
             Image keyLook = Common.RenderKeyImage("postit-empty", _data, "postit-unused-clear");
             await Connection.SetImageAsync(keyLook);
+
+            // Uncomment to help debug and rule out colors without enough contrast
+            //await Connection.SetTitleAsync(Common._colorUsed.Name);
         }
     }
 }
