@@ -1,6 +1,6 @@
 using BarRaider.SdTools;
 using System;
-using System.Text;
+using System.Drawing;
 
 
 namespace ClipboardBuddy
@@ -17,7 +17,8 @@ namespace ClipboardBuddy
         /*
          * INTERNAL PROPERTIES
          */
-        private int PRESS_COUNT = 0;
+        private string _data = "";
+        private DateTime _whenPressed;
 
         /*
          * BASIC ABSTRACT METHODS SKELETONS
@@ -46,20 +47,31 @@ namespace ClipboardBuddy
         /*
          * ACTION CODE
          */
-        public override async void KeyPressed(KeyPayload payload)
+        public override void KeyPressed(KeyPayload payload)
         {
-            PRESS_COUNT += 1;
-            if(PRESS_COUNT % 2 == 0) {
-                await Connection.SetTitleAsync("Nothing here...");
-            } else {
-                await Connection.SetTitleAsync("Go away !!");
-            }
-            Logger.Instance.LogMessage(TracingLevel.INFO, "Key Pressed with count" + PRESS_COUNT);
+            _whenPressed = DateTime.Now;
         }
         
-        public override void KeyReleased(KeyPayload payload)
+        public override async void KeyReleased(KeyPayload payload)
         {
-            Logger.Instance.LogMessage(TracingLevel.DEBUG, "Key Released");
+            // Processing the behavior of the key to get the relevant text
+            _data = Common.TwoStateStorage(_whenPressed, DateTime.Now, _data);
+
+            if (_data == "")
+            {
+                Image keyLook = Image.FromFile("icons\\postit-unused-secure@2x.png");
+                await Connection.SetImageAsync(keyLook);
+                await Connection.SetTitleAsync("");
+            } 
+            else
+            {
+                // DISPLAY BASIC: setting the proper background and showing the timestamp as title
+                Image keyLook = Image.FromFile("icons\\postit-secure@2x.png");
+                await Connection.SetImageAsync(keyLook);
+
+                string secureText = DateTime.Now.ToShortDateString() + "\n" + DateTime.Now.ToLongTimeString();
+                await Connection.SetTitleAsync(secureText);
+            }
         }
     }
 }

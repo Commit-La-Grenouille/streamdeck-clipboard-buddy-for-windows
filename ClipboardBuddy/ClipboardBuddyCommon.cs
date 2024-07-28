@@ -35,7 +35,7 @@ namespace ClipboardBuddy
             //Color.Black,
             Color.BlanchedAlmond,
             //Color.Blue,
-            Color.BlueViolet,
+            //Color.BlueViolet,
             //Color.Brown,
             Color.BurlyWood,
             Color.CadetBlue,
@@ -188,6 +188,7 @@ namespace ClipboardBuddy
             }
             else
             {
+                // Picking a color for the text (without picking twice the same)
                 Random rnd = new Random();
                 int pick = rnd.Next(UsefulColors.Length);
                 Color NewColor = UsefulColors[pick];
@@ -196,11 +197,17 @@ namespace ClipboardBuddy
                     NewColor = UsefulColors[pick + 1];
                 }
                 _colorUsed = NewColor;
+
+                // The struct for the final image
+                Image[] rendering;
                 
+                // Other objects for the rendering
+                Font myFont = new Font(FontFamily.GenericMonospace, LineFontSize);
+                PointF startCoords = new PointF(0.0f, 0.0f);
+
                 // DISPLAY+: show the text rendered multiline as text
-                Image[] rendering = GraphicsTools.DrawMultiLinedText(displayText, 0, LineLength, LineNumber,
-                    new Font(FontFamily.GenericMonospace, LineFontSize), Color.Transparent, _colorUsed, false,
-                    new PointF(0.0f, 0.0f));
+                rendering = GraphicsTools.DrawMultiLinedText(displayText, 0, LineLength, LineNumber,
+                            myFont, Color.Transparent, _colorUsed, false, startCoords);
                 return rendering[0];
             }
         }
