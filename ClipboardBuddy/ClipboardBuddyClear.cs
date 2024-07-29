@@ -12,13 +12,16 @@ namespace ClipboardBuddy
          * CONSTRUCTOR
          */
         public ClipboardBuddyClear(SDConnection connection, InitialPayload payload) : base(connection, payload)
-        { }
+        {
+            string myCoords = payload.Coordinates.Row + "x" + payload.Coordinates.Column;
+            DataStruct.InitialImageNameMatrix[myCoords] = "postit-unused-clear";
+            DataStruct.ConnectionMatrix[myCoords] = connection;
+        }
 
         
         /*
          * INTERNAL PROPERTIES
          */
-        private string _data = "";
         private DateTime _whenPressed;
 
         
@@ -57,15 +60,11 @@ namespace ClipboardBuddy
         public override async void KeyReleased(KeyPayload payload)
         {
             // Processing the behavior of the key to get the relevant text
-            _data = Common.TwoStateStorage(_whenPressed, DateTime.Now, _data);
+            Common.TwoStateStorage(_whenPressed, DateTime.Now, payload.Coordinates);
 
             // DISPLAY+: show the text rendered multiline as text
-            Image keyLook = Common.RenderKeyImage("postit-empty", _data, "postit-unused-clear", payload.Coordinates);
+            Image keyLook = Common.RenderKeyImage("postit-empty", payload.Coordinates);
             await Connection.SetImageAsync(keyLook);
-
-            // Uncomment to help debug and rule out colors without enough contrast (and change the matrix visibility)
-            //Color usedColor = (Color)Common.ColorUsedMatrix[payload.Coordinates.Row + "x" + payload.Coordinates.Column];
-            //await Connection.SetTitleAsync(usedColor.Name);
         }
     }
 }

@@ -17,7 +17,6 @@ namespace ClipboardBuddy
         /*
          * INTERNAL PROPERTIES
          */
-        private int PRESS_COUNT = 0;
 
         /*
          * BASIC ABSTRACT METHODS SKELETONS
@@ -46,20 +45,15 @@ namespace ClipboardBuddy
         /*
          * ACTION CODE
          */
-        public override async void KeyPressed(KeyPayload payload)
+        public override void KeyPressed(KeyPayload payload)
         {
-            PRESS_COUNT += 1;
-            if(PRESS_COUNT % 2 == 0) {
-                await Connection.SetTitleAsync("KA-BOOM !");
-            } else {
-                await Connection.SetTitleAsync("POUF !!");
-            }
-            Logger.Instance.LogMessage(TracingLevel.INFO, "Key Pressed with count" + PRESS_COUNT);
+            Logger.Instance.LogMessage(TracingLevel.INFO, "Key Pressed");
         }
         
-        public override void KeyReleased(KeyPayload payload)
+        public override async void KeyReleased(KeyPayload payload)
         {
             Logger.Instance.LogMessage(TracingLevel.DEBUG, "Key Released");
+            await Connection.SetTitleAsync("");
         }
     }
 }

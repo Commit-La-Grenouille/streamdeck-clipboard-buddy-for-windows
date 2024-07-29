@@ -12,12 +12,15 @@ namespace ClipboardBuddy
          * CONSTRUCTOR
          */
         public ClipboardBuddySecure(SDConnection connection, InitialPayload payload) : base(connection, payload)
-        { }
+        {
+            string myCoords = payload.Coordinates.Row + "x" + payload.Coordinates.Column;
+            DataStruct.InitialImageNameMatrix[myCoords] = "postit-unused-secure";
+            DataStruct.ConnectionMatrix[myCoords] = connection;
+        }
 
         /*
          * INTERNAL PROPERTIES
          */
-        private string _data = "";
         private DateTime _whenPressed;
 
         /*
@@ -55,9 +58,10 @@ namespace ClipboardBuddy
         public override async void KeyReleased(KeyPayload payload)
         {
             // Processing the behavior of the key to get the relevant text
-            _data = Common.TwoStateStorage(_whenPressed, DateTime.Now, _data);
+            string data = Common.TwoStateStorage(_whenPressed, DateTime.Now, payload.Coordinates);
 
-            if (_data == "")
+            // TO DO: move to a rendered image once the PR has been merged (or similar feature is available)
+            if (data == "")
             {
                 Image keyLook = Image.FromFile("icons\\postit-unused-secure@2x.png");
                 await Connection.SetImageAsync(keyLook);
