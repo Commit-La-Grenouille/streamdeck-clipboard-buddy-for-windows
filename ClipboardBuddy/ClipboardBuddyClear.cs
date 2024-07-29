@@ -58,16 +58,14 @@ namespace ClipboardBuddy
         {
             // Processing the behavior of the key to get the relevant text
             _data = Common.TwoStateStorage(_whenPressed, DateTime.Now, _data);
-            
-            // DISPLAY BASIC: display the text as title
-            // await Connection.SetTitleAsync(_data);
-            
+
             // DISPLAY+: show the text rendered multiline as text
-            Image keyLook = Common.RenderKeyImage("postit-empty", _data, "postit-unused-clear");
+            Image keyLook = Common.RenderKeyImage("postit-empty", _data, "postit-unused-clear", payload.Coordinates);
             await Connection.SetImageAsync(keyLook);
 
-            // Uncomment to help debug and rule out colors without enough contrast
-            //await Connection.SetTitleAsync(Common._colorUsed.Name);
+            // Uncomment to help debug and rule out colors without enough contrast (and change the matrix visibility)
+            //Color usedColor = (Color)Common.ColorUsedMatrix[payload.Coordinates.Row + "x" + payload.Coordinates.Column];
+            //await Connection.SetTitleAsync(usedColor.Name);
         }
     }
 }

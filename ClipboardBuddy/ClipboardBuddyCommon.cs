@@ -1,6 +1,7 @@
 
 using BarRaider.SdTools;
 using System;
+using System.Collections;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
@@ -165,7 +166,42 @@ namespace ClipboardBuddy
             Color.YellowGreen
         };
 
-        private static Color _colorUsed;  // To avoid using the same color twice in a row
+        // To avoid using the same color twice in a row (initialized for a 32 keys Stream Deck to be lazy)
+        private static Hashtable _colorUsedMatrix = new Hashtable()
+        {
+            {"0x0", Color.Transparent},
+            {"0x1", Color.Transparent},
+            {"0x2", Color.Transparent},
+            {"0x3", Color.Transparent},
+            {"0x4", Color.Transparent},
+            {"0x5", Color.Transparent},
+            {"0x6", Color.Transparent},
+            {"0x7", Color.Transparent},
+            {"1x0", Color.Transparent},
+            {"1x1", Color.Transparent},
+            {"1x2", Color.Transparent},
+            {"1x3", Color.Transparent},
+            {"1x4", Color.Transparent},
+            {"1x5", Color.Transparent},
+            {"1x6", Color.Transparent},
+            {"1x7", Color.Transparent},
+            {"2x0", Color.Transparent},
+            {"2x1", Color.Transparent},
+            {"2x2", Color.Transparent},
+            {"2x3", Color.Transparent},
+            {"2x4", Color.Transparent},
+            {"2x5", Color.Transparent},
+            {"2x6", Color.Transparent},
+            {"2x7", Color.Transparent},
+            {"3x0", Color.Transparent},
+            {"3x1", Color.Transparent},
+            {"3x2", Color.Transparent},
+            {"3x3", Color.Transparent},
+            {"3x4", Color.Transparent},
+            {"3x5", Color.Transparent},
+            {"3x6", Color.Transparent},
+            {"3x7", Color.Transparent}
+        };
         
         
         /*
@@ -178,8 +214,9 @@ namespace ClipboardBuddy
         /// <param name="backFile">The relevant name of the file to use as background</param>
         /// <param name="displayText">The text that should be displayed</param>
         /// <param name="typeFile">The relevant name of the file for the key type (to restore the empty display)</param>
+        /// <param name="keyCoords">The coordinates of the key we are dealing with (for the color storage)</param>
         /// <returns>The image ready to be send to the key</returns>
-        public static Image RenderKeyImage(string backFile, string displayText, string typeFile)
+        public static Image RenderKeyImage(string backFile, string displayText, string typeFile, KeyCoordinates keyCoords)
         {
             if (displayText == "")
             {
@@ -191,12 +228,15 @@ namespace ClipboardBuddy
                 // Picking a color for the text (without picking twice the same)
                 Random rnd = new Random();
                 int pick = rnd.Next(UsefulColors.Length);
-                Color NewColor = UsefulColors[pick];
-                if (NewColor.Equals(_colorUsed))
+                Color newColor = UsefulColors[pick];
+                
+                // Moving away from a property
+                while (_colorUsedMatrix.ContainsValue(newColor))
                 {
-                    NewColor = UsefulColors[pick + 1];
+                    pick++;
+                    newColor = UsefulColors[pick];
                 }
-                _colorUsed = NewColor;
+                _colorUsedMatrix[keyCoords.Row + "x" + keyCoords.Column] = newColor;
 
                 // The struct for the final image
                 Image[] rendering;
@@ -207,7 +247,7 @@ namespace ClipboardBuddy
 
                 // DISPLAY+: show the text rendered multiline as text
                 rendering = GraphicsTools.DrawMultiLinedText(displayText, 0, LineLength, LineNumber,
-                            myFont, Color.Transparent, _colorUsed, false, startCoords);
+                            myFont, Color.Transparent, newColor, false, startCoords);
                 return rendering[0];
             }
         }
