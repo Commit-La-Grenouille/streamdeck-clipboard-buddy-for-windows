@@ -25,6 +25,11 @@ namespace ClipboardBuddy
          * PUBLIC METHODS
          */
 
+        public static string CoordStringFromKeyCoordinates(KeyCoordinates kc)
+        {
+            return kc.Row + "x" + kc.Column;
+        }
+
         /// <summary>
         /// This method takes the background ref and the text to render the final image to display.
         /// </summary>
@@ -33,7 +38,7 @@ namespace ClipboardBuddy
         /// <returns>The image ready to be sent to the key</returns>
         public static Image RenderKeyImage(string backFile, KeyCoordinates keyCoords)
         {
-            string coord = keyCoords.Row + "x" + keyCoords.Column;
+            string coord = CoordStringFromKeyCoordinates(keyCoords);
             string displayText = (string)DataStruct.TextStorageMatrix[coord];
             
             if (displayText == "")
@@ -77,7 +82,7 @@ namespace ClipboardBuddy
         public static string TwoStateStorage(DateTime down, DateTime up, KeyCoordinates keyCoords)
         {
             TimeSpan pressLength = up - down;
-            string coord = keyCoords.Row + "x" + keyCoords.Column;
+            string coord = CoordStringFromKeyCoordinates(keyCoords);
 
             if (pressLength.TotalSeconds <= LongPress)
             {

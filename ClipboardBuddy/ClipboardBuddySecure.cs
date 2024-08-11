@@ -57,6 +57,9 @@ namespace ClipboardBuddy
         
         public override async void KeyReleased(KeyPayload payload)
         {
+            // Keeping track of the text content to decide if there is a need to refresh the tile's text
+            string dataBefore = (string)DataStruct.TextStorageMatrix[Common.CoordStringFromKeyCoordinates(payload.Coordinates)];
+                
             // Processing the behavior of the key to get the relevant text
             string data = Common.TwoStateStorage(_whenPressed, DateTime.Now, payload.Coordinates);
 
@@ -69,12 +72,20 @@ namespace ClipboardBuddy
             } 
             else
             {
-                // DISPLAY BASIC: setting the proper background and showing the timestamp as title
-                Image keyLook = Image.FromFile("icons\\postit-secure@2x.png");
-                await Connection.SetImageAsync(keyLook);
+                if (data == dataBefore)
+                {
+                    // Nothing to change in the display ;)
+                    await Connection.ShowOk();
+                }
+                else
+                {
+                    // DISPLAY BASIC: setting the proper background and showing the timestamp as title
+                    Image keyLook = Image.FromFile("icons\\postit-secure@2x.png");
+                    await Connection.SetImageAsync(keyLook);
 
-                string secureText = DateTime.Now.ToShortDateString() + "\n" + DateTime.Now.ToLongTimeString();
-                await Connection.SetTitleAsync(secureText);
+                    string secureText = DateTime.Now.ToShortDateString() + "\n" + DateTime.Now.ToLongTimeString();
+                    await Connection.SetTitleAsync(secureText);
+                }
             }
         }
     }
