@@ -36,9 +36,9 @@ namespace ClipboardBuddy
         /// <param name="backFile">The relevant name of the file to use as background</param>
         /// <param name="keyCoords">The coordinates of the key we are dealing with (for the text & color storage)</param>
         /// <returns>The image ready to be sent to the key</returns>
-        public static Image RenderKeyImage(string backFile, KeyCoordinates keyCoords)
+        public static Image RenderKeyImage(string backFile, KeyCoordinates keyCoords = null)
         {
-            string coord = CoordStringFromKeyCoordinates(keyCoords);
+            string coord = keyCoords != null ? CoordStringFromKeyCoordinates(keyCoords) : "";
             string displayText = (string)DataStruct.TextStorageMatrix[coord];
             
             if (displayText == "")

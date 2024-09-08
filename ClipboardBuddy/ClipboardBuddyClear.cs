@@ -14,7 +14,7 @@ namespace ClipboardBuddy
         public ClipboardBuddyClear(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
             string myCoords = payload.Coordinates.Row + "x" + payload.Coordinates.Column;
-            DataStruct.InitialImageNameMatrix[myCoords] = "postit-unused-clear";
+            DataStruct.InitialImageNameMatrix[myCoords] = _initialImage;
             DataStruct.ConnectionMatrix[myCoords] = connection;
         }
 
@@ -23,14 +23,17 @@ namespace ClipboardBuddy
          * INTERNAL PROPERTIES
          */
         private DateTime _whenPressed;
+        private string _initialImage = "postit-unused-clear";
 
         
         /*
          * BASIC ABSTRACT METHODS SKELETONS
          */
-        public override void Dispose()
+        public override async void Dispose()
         {
-            Logger.Instance.LogMessage(TracingLevel.DEBUG, "Destructor called");
+            // We need to make sure the last state is a clean display to avoid ghosts when the device powers back on
+            Image keyLook = Common.RenderKeyImage(_initialImage);
+            await Connection.SetImageAsync(keyLook);
         }
 
         public override void OnTick()
