@@ -13,7 +13,7 @@ namespace ClipboardBuddy
          */
         public ClipboardBuddyClear(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
-            string myCoords = payload.Coordinates.Row + "x" + payload.Coordinates.Column;
+            string myCoords = Common.CoordStringFromKeyCoordinates(payload.Coordinates);
             DataStruct.InitialImageNameMatrix[myCoords] = _initialImage;
             DataStruct.ConnectionMatrix[myCoords] = connection;
         }

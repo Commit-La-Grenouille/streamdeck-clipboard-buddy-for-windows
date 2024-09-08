@@ -15,7 +15,7 @@ namespace ClipboardBuddy
          */
         public ClipboardBuddyLine(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
-            string myCoords = payload.Coordinates.Row + "x" + payload.Coordinates.Column;
+            string myCoords = Common.CoordStringFromKeyCoordinates(payload.Coordinates);
             DataStruct.InitialImageNameMatrix[myCoords] = "postit-trashcan";
             DataStruct.ConnectionMatrix[myCoords] = connection;
         }
