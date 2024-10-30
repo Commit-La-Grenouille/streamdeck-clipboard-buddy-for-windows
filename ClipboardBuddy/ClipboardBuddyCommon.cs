@@ -40,6 +40,8 @@ namespace ClipboardBuddy
         {
             string coord = keyCoords != null ? CoordStringFromKeyCoordinates(keyCoords) : "";
             string displayText = (string)DataStruct.TextStorageMatrix[coord];
+
+            string backgroundPath = "icons\\postit-empty@2x.png";
             
             if (displayText == "")
             {
@@ -66,8 +68,8 @@ namespace ClipboardBuddy
                 PointF startCoords = new PointF(0.0f, 0.0f);
 
                 // DISPLAY+: show the text rendered multiline as text
-                Image[] rendering = GraphicsTools.DrawMultiLinedText(displayText, 0, LineLength, LineNumber,
-                            myFont, Color.Transparent, newColor, false, startCoords);
+                Image[] rendering = GhostGraphicsTools.DrawMultiLinedTextWithBackground(displayText, 0, LineLength, LineNumber,
+                            myFont, backgroundPath, Color.Transparent, newColor, false, startCoords);
                 return rendering[0];
             }
         }
