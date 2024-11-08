@@ -6,7 +6,9 @@ set PROJ=ClipboardBuddy
 set UUID=net.localhost.streamdeck.clipboard-buddy-for-windows
 
 :: cd /d %~dp0
-cd %~dp0..\%PROJ%\bin\%1
+set build_workdir=%~dp0..\%PROJ%\bin\Debug
+cd %build_workdir%
+:: simpler than asking for a destination under bin
 
 REM *** MAKE SURE THE FOLLOWING VARIABLES ARE CORRECT ***
 REM (Distribution tool be downloaded from: https://docs.elgato.com/sdk/plugins/packaging )
@@ -22,11 +24,11 @@ timeout /t 2
 del %OUTPUT_DIR%\%UUID%.streamDeckPlugin
 
 @echo on
-%DISTRIBUTION_TOOL% -b -i %UUID%.sdPlugin -o %OUTPUT_DIR%
+%DISTRIBUTION_TOOL% -b -i %UUID%.sdPlugin -o %build_workdir%
 @echo off
 IF %ERRORLEVEL% NEQ 0 (Echo ---------- AN ERROR WAS FOUND ---------- & Exit /b 1)
 
 rmdir %APPDATA%\Elgato\StreamDeck\Plugins\%UUID%.sdPlugin /s /q
 START "" %STREAM_DECK_FILE%
 timeout /t %STREAM_DECK_LOAD_TIMEOUT%
-%OUTPUT_DIR%\%UUID%.streamDeckPlugin
+%build_workdir%\%UUID%.streamDeckPlugin

@@ -1,10 +1,7 @@
-﻿using BarRaider.SdTools.Wrappers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Text;
+
 
 namespace ClipboardBuddy
 {
@@ -13,28 +10,6 @@ namespace ClipboardBuddy
     /// </summary>
     public static class GhostGraphicsTools
     {
-        /// <summary>
-        /// Generates one (or more) images where each one has a few letters drawn on them based on the parameters. You can set number of letters and number of lines per key. 
-        /// Use expandToNextImage to decide if you want only one Image returned or multiple if text is too long for one key
-        /// Will generate a plain background of the provided color.
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="currentTextPosition"></param>
-        /// <param name="lettersPerLine"></param>
-        /// <param name="numberOfLines"></param>
-        /// <param name="font"></param>
-        /// <param name="backgroundColor"></param>
-        /// <param name="textColor"></param>
-        /// <param name="expandToNextImage"></param>
-        /// <param name="keyDrawStartingPosition"></param>
-        /// <returns>A list of images generated</returns>
-        public static Image[] DrawMultiLinedText(string text, int currentTextPosition, int lettersPerLine,
-            int numberOfLines, Font font, Color backgroundColor, Color textColor, bool expandToNextImage,
-            PointF keyDrawStartingPosition)
-        {
-            return DrawMultiLinedTextCommon(text, currentTextPosition, lettersPerLine, numberOfLines, font, backgroundColor, textColor, expandToNextImage, keyDrawStartingPosition);
-        }
-
         /// <summary>
         /// Generates one (or more) images where each one has a few letters drawn on them based on the parameters. You can set number of letters and number of lines per key.
         /// Use expandToNextImage to decide if you want only one Image returned or multiple if text is too long for one key
@@ -55,7 +30,8 @@ namespace ClipboardBuddy
             PointF keyDrawStartingPosition)
         {
             Image myBackground = Image.FromFile(backgroundPath);
-            return DrawMultiLinedTextCommon(text, currentTextPosition, lettersPerLine, numberOfLines, font, Color.Transparent, textColor, expandToNextImage, keyDrawStartingPosition, myBackground);
+            return DrawMultiLinedTextCommon(text, currentTextPosition, lettersPerLine, numberOfLines,
+                font, Color.Transparent, textColor, expandToNextImage, keyDrawStartingPosition, myBackground);
         }
 
         /// <summary>
@@ -75,13 +51,15 @@ namespace ClipboardBuddy
         /// <param name="keyDrawStartingPosition"></param>
         /// <param name="background"></param>
         /// <returns>A list of images generated.</returns>
-        private static Image[] DrawMultiLinedTextCommon(string text, int currentTextPosition, int lettersPerLine, int numberOfLines, Font font, Color backgroundColor, Color textColor, bool expandToNextImage, PointF keyDrawStartingPosition, Image background = null)
+        private static Image[] DrawMultiLinedTextCommon(string text, int currentTextPosition, int lettersPerLine,
+            int numberOfLines, Font font, Color backgroundColor, Color textColor, bool expandToNextImage,
+            PointF keyDrawStartingPosition, Image background = null)
         {
             float currentWidth = keyDrawStartingPosition.X;
             float currentHeight = keyDrawStartingPosition.Y;
             int currentLine = 0;
             List<Image> images = new List<Image>();
-            Bitmap img = Tools.GenerateGenericKeyImage(out Graphics graphics);
+            Bitmap img = BarRaider.SdTools.Tools.GenerateGenericKeyImage(out Graphics graphics);
             images.Add(img);
 
             if (background != null)
@@ -113,7 +91,9 @@ namespace ClipboardBuddy
                     {
                         if (expandToNextImage)
                         {
-                            images.AddRange(DrawMultiLinedTextCommon(text, letter, lettersPerLine, numberOfLines, font, backgroundColor, textColor, expandToNextImage, keyDrawStartingPosition, background));
+                                images.AddRange(DrawMultiLinedTextCommon(text, letter,
+                                    lettersPerLine, numberOfLines, font, backgroundColor, textColor, expandToNextImage,
+                                    keyDrawStartingPosition, background));
                         }
                         break;
                     }
