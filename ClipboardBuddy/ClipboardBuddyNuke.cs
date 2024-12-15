@@ -1,6 +1,5 @@
 using BarRaider.SdTools;
-using System;
-using System.Text;
+using System.Drawing;
 
 
 namespace ClipboardBuddy
@@ -12,11 +11,16 @@ namespace ClipboardBuddy
          * CONSTRUCTOR
          */
         public ClipboardBuddyNuke(SDConnection connection, InitialPayload payload) : base(connection, payload)
-        { }
+        {
+            string myCoords = Common.CoordStringFromKeyCoordinates(payload.Coordinates);
+            DataStruct.InitialImageNameMatrix[myCoords] = _initialImage;
+            DataStruct.ConnectionMatrix[myCoords] = connection;
+        }
 
         /*
          * INTERNAL PROPERTIES
          */
+        private string _initialImage = "postit-nuke";
 
         /*
          * BASIC ABSTRACT METHODS SKELETONS
@@ -47,13 +51,32 @@ namespace ClipboardBuddy
          */
         public override void KeyPressed(KeyPayload payload)
         {
-            Logger.Instance.LogMessage(TracingLevel.INFO, "Key Pressed");
+            Logger.Instance.LogMessage(TracingLevel.DEBUG, "Key Pressed");
         }
         
         public override async void KeyReleased(KeyPayload payload)
         {
-            Logger.Instance.LogMessage(TracingLevel.DEBUG, "Key Released");
-            await Connection.SetTitleAsync("");
+            for (int row = 0; row < DataStruct.MaxRowId; row++)
+            {
+                for (int col = 0; col < DataStruct.MaxColumnId; col++)
+                {
+                    string thisCoord = row + "x" + col;
+                    DataStruct.TextStorageMatrix[thisCoord] = "";
+
+                    string imageName = (string)DataStruct.InitialImageNameMatrix[thisCoord];
+                    if (imageName == "" || imageName.Contains("trashcan") || imageName.Contains("nuke"))
+                    {
+                        continue; // No need to perform actions on these keys
+                    }
+
+                    Image unusedImg =
+                        Image.FromFile("icons\\" + DataStruct.InitialImageNameMatrix[thisCoord] + "@2x.png");
+                    SDConnection targetKeyLink = (SDConnection)DataStruct.ConnectionMatrix[thisCoord];
+
+                    await targetKeyLink.SetImageAsync(unusedImg);
+                    await targetKeyLink.SetTitleAsync("");
+                }
+            }
         }
     }
 }

@@ -12,7 +12,11 @@ namespace ClipboardBuddy
          * CONSTRUCTOR
          */
         public ClipboardBuddyDual(SDConnection connection, InitialPayload payload) : base(connection, payload)
-        { }
+        {
+            string myCoords = Common.CoordStringFromKeyCoordinates(payload.Coordinates);
+            DataStruct.InitialImageNameMatrix[myCoords] = _initialImage;
+            DataStruct.ConnectionMatrix[myCoords] = connection;
+        }
         /*
          * INTERNAL PROPERTIES
          */

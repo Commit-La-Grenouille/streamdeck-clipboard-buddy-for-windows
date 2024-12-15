@@ -1,8 +1,5 @@
 using BarRaider.SdTools;
-using System;
 using System.Drawing;
-using System.Text;
-using BarRaider.SdTools.Communication;
 
 
 namespace ClipboardBuddy
@@ -16,13 +13,14 @@ namespace ClipboardBuddy
         public ClipboardBuddyLine(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
             string myCoords = Common.CoordStringFromKeyCoordinates(payload.Coordinates);
-            DataStruct.InitialImageNameMatrix[myCoords] = "postit-trashcan";
+            DataStruct.InitialImageNameMatrix[myCoords] = _initialImage;
             DataStruct.ConnectionMatrix[myCoords] = connection;
         }
 
         /*
          * INTERNAL PROPERTIES
          */
+        private string _initialImage = "postit-trashcan";
 
         /*
          * BASIC ABSTRACT METHODS SKELETONS

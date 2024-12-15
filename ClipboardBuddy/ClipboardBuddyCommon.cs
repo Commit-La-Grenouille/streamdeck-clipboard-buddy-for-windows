@@ -126,18 +126,20 @@ namespace ClipboardBuddy
                 UpdateClipboard((string)DataStruct.TextStorageMatrix[coord]);
                 SendKeys.SendWait("^v");  // careful that using uppercase means activating shift
             }
-            else if (pressLength.TotalSeconds > LongPress && pressLength.TotalSeconds < ClearPress)
+            else if (pressLength.TotalSeconds > SecurePress && pressLength.TotalSeconds < ClearPress)
             {
                 DataStruct.TextStorageMatrix[coord] = ReadClipboard();
-                finalTile = Image.FromFile(secureBackgroundPath);
+                // finalTile = Image.FromFile(secureBackgroundPath);
                 // TODO: add a smart way to display info about the secure entry to distinguish the key from other secure
+                DataStruct.TextStorageMatrix[coord] = "";
+                finalTile = RenderKeyImage(secureBackgroundPath, keyCoords);
             }
             else if (pressLength.TotalSeconds >= ClearPress)
             {
                 DataStruct.TextStorageMatrix[coord] = "";
                 finalTile = Image.FromFile(backgroundImg);
             }
-            else
+            else // here are are between LongPress & SecurePress
             {
                 DataStruct.TextStorageMatrix[coord] = ReadClipboard();
             }
