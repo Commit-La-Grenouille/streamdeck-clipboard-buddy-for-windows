@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace ClipboardBuddy
 {
-    [PluginActionId("net.localhost.streamdeck.clipboard-buddy-clear")]
+    [PluginActionId("net.localhost.streamdeck.clipboard-buddy-for-windows-clear")]
     public class ClipboardBuddyClear : KeypadBase
     {
         /*
@@ -67,6 +67,9 @@ namespace ClipboardBuddy
 
             // DISPLAY+: show the text rendered multiline as text
             Image keyLook = Common.RenderKeyImage("postit-empty", payload.Coordinates);
+            
+            // Streamlined version where the lib returns the key rendered ^^
+            // Image keyLook = Common.TwoStateStorage(_whenPressed, DateTime.Now, payload.Coordinates);
             await Connection.SetImageAsync(keyLook);
         }
     }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ClipboardBuddy
 {
-    [PluginActionId("net.localhost.streamdeck.clipboard-buddy-nuke")]
+    [PluginActionId("net.localhost.streamdeck.clipboard-buddy-for-windows-nuke")]
     public class ClipboardBuddyNuke : KeypadBase
     {
         /*

@@ -1,11 +1,11 @@
 using BarRaider.SdTools;
 using System;
-using System.Text;
+using System.Drawing;
 
 
 namespace ClipboardBuddy
 {
-    [PluginActionId("net.localhost.streamdeck.clipboard-buddy")]
+    [PluginActionId("net.localhost.streamdeck.clipboard-buddy-for-windows-multi")]
     public class ClipboardBuddyDual : KeypadBase
     {
         /*
@@ -13,11 +13,11 @@ namespace ClipboardBuddy
          */
         public ClipboardBuddyDual(SDConnection connection, InitialPayload payload) : base(connection, payload)
         { }
-
         /*
          * INTERNAL PROPERTIES
          */
-        private int PRESS_COUNT = 0;
+        private DateTime _whenPressed;
+        private string _initialImage = "postit-unused";
 
         /*
          * BASIC ABSTRACT METHODS SKELETONS
@@ -46,20 +46,16 @@ namespace ClipboardBuddy
         /*
          * ACTION CODE
          */
-        public override async void KeyPressed(KeyPayload payload)
+        public override void KeyPressed(KeyPayload payload)
         {
-            PRESS_COUNT += 1;
-            if(PRESS_COUNT % 2 == 0) {
-                await Connection.SetTitleAsync("Monkey Kong ?!?");
-            } else {
-                await Connection.SetTitleAsync("Hello World !");
-            }
-            Logger.Instance.LogMessage(TracingLevel.INFO, "Key Pressed with count" + PRESS_COUNT);
+            _whenPressed = DateTime.Now;
         }
         
-        public override void KeyReleased(KeyPayload payload)
+        public override async void KeyReleased(KeyPayload payload)
         {
-            Logger.Instance.LogMessage(TracingLevel.DEBUG, "Key Released");
+            // Processing the behavior of the key to get the relevant image to display
+            Image keyLook = Common.ThreeStateStorage(_whenPressed, DateTime.Now, payload.Coordinates, _initialImage);
+            await Connection.SetImageAsync(keyLook);
         }
     }
 }

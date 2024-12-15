@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace ClipboardBuddy
 {
-    [PluginActionId("net.localhost.streamdeck.clipboard-buddy-secure")]
+    [PluginActionId("net.localhost.streamdeck.clipboard-buddy-for-windows-secure")]
     public class ClipboardBuddySecure : KeypadBase
     {
         /*

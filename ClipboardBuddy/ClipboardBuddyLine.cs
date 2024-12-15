@@ -7,7 +7,7 @@ using BarRaider.SdTools.Communication;
 
 namespace ClipboardBuddy
 {
-    [PluginActionId("net.localhost.streamdeck.clipboard-buddy-line")]
+    [PluginActionId("net.localhost.streamdeck.clipboard-buddy-for-windows-line")]
     public class ClipboardBuddyLine : KeypadBase
     {
         /*

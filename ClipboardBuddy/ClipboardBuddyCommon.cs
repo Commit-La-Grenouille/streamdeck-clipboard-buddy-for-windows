@@ -21,6 +21,9 @@ namespace ClipboardBuddy
         private const int LineLength = 12;
         private const int LineNumber = 7;
         
+        // Some convenient values to centralize
+        private const string secureBackgroundPath = "icons\\postit-secure@2x.png";
+        
         /*
          * PUBLIC METHODS
          */
@@ -75,7 +78,7 @@ namespace ClipboardBuddy
         }
         
         /// <summary>
-        /// This method takes care of a simple storage/release/clear.
+        /// This method takes care of a simple storage/release & can be cleared.
         /// </summary>
         /// <param name="down">the DateTime when the key was pressed</param>
         /// <param name="up">the DateTime when the key was released</param>
@@ -103,7 +106,51 @@ namespace ClipboardBuddy
             // TO DO: deprecate the return once all type of keys can be rendered as wrapped text
             return (string)DataStruct.TextStorageMatrix[coord];
         }
-        
+
+        /// <summary>
+        /// This method takes care of a double clear-or-secure-storage/release & can be cleared.
+        /// </summary>
+        /// <param name="down">the DateTime when the key was pressed</param>
+        /// <param name="up">the DateTime when the key was released</param>
+        /// <param name="keyCoords">The coordinates of the key we are dealing with (for the text storage)</param>
+        /// <returns>The image to display on the key</returns>
+        public static Image ThreeStateStorage(DateTime down, DateTime up, KeyCoordinates keyCoords, string backgroundImg)
+        {
+            Image finalTile = null;
+            
+            TimeSpan pressLength = up - down;
+            string coord = CoordStringFromKeyCoordinates(keyCoords);
+
+            if (pressLength.TotalSeconds <= LongPress)
+            {
+                UpdateClipboard((string)DataStruct.TextStorageMatrix[coord]);
+                SendKeys.SendWait("^v");  // careful that using uppercase means activating shift
+            }
+            else if (pressLength.TotalSeconds > LongPress && pressLength.TotalSeconds < ClearPress)
+            {
+                DataStruct.TextStorageMatrix[coord] = ReadClipboard();
+                finalTile = Image.FromFile(secureBackgroundPath);
+                // TODO: add a smart way to display info about the secure entry to distinguish the key from other secure
+            }
+            else if (pressLength.TotalSeconds >= ClearPress)
+            {
+                DataStruct.TextStorageMatrix[coord] = "";
+                finalTile = Image.FromFile(backgroundImg);
+            }
+            else
+            {
+                DataStruct.TextStorageMatrix[coord] = ReadClipboard();
+            }
+            
+            // Simplifying the code by making the tile content the most common: clear with text
+            if (finalTile is null)
+            {
+                finalTile = RenderKeyImage("postit-empty", keyCoords);
+            }
+
+            // TO DO: deprecate the return once all type of keys can be rendered as wrapped text
+            return finalTile;
+        }
         
         /*
          * HELPER METHODS (kept private)
